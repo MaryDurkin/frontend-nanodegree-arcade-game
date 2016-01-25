@@ -12,7 +12,7 @@ If that happens the game will end and a
 short ascension service will take place.
 If you collect any of the treasures that appear on the path
 that will increase your score.
-To restart the game after a collision with a bug, press <space>
+To restart the game after a collision with a bug, press **space**
 
 ## Thank you!
 
