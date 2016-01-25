@@ -26,7 +26,7 @@ var Engine = (function(global) {
         lastTime;
 
     canvas.width = 505;
-    canvas.height = 606;
+    canvas.height = 707;
     doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
@@ -57,6 +57,7 @@ var Engine = (function(global) {
          * function again as soon as the browser is able to draw another frame.
          */
         win.requestAnimationFrame(main);
+
     }
 
     /* This function does some initial setup that should only occur once,
@@ -80,7 +81,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+
     }
 
     /* This is called by the update function and loops through all of the
@@ -91,10 +92,41 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
-            enemy.update(dt);
-        });
-        player.update();
+        //increase the number of enemies by one every second level
+        if (player.levelUp === true){
+
+            if (player.level % 2 === 1) {
+
+                // this switch ensures that the enemies are equally spread
+                // along the y axis on the stones.
+                // each new enemy is faster than previous ones
+                switch(allEnemies.length%3) {
+                    case 0:
+                        allEnemies.push(new Enemy(1,yStartPos1,(initialSpeed + 5*(player.level + 1))));
+                        break;
+                    case 1:
+                        allEnemies.push(new Enemy(1,yStartPos2,(initialSpeed + 5*(player.level + 1))));
+                        break;
+                    case 2:
+                        allEnemies.push(new Enemy(1,yStartPos3,(initialSpeed + 5*(player.level + 1))));
+                        break;
+                }
+
+            }
+
+            player.levelUp = false;
+        }
+
+        // if player has not collided with a bug; update enemies, player and gem
+        if (player.bugCollision === false) {
+            allEnemies.forEach(function(enemy) {
+                enemy.update(dt);
+            });
+            player.update(dt);
+            gem.update();
+        }
+        //otherwise game is over and player ascends to the afterlife
+        else player.ascend(dt);
     }
 
     /* This function initially draws the "game level", it will then call
@@ -136,6 +168,7 @@ var Engine = (function(global) {
             }
         }
 
+
         renderEntities();
     }
 
@@ -144,22 +177,45 @@ var Engine = (function(global) {
      * on your enemy and player entities within app.js
      */
     function renderEntities() {
+
+        gem.render();
         /* Loop through all of the objects within the allEnemies array and call
-         * the render function you have defined.
+         * the render function.
          */
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
 
+        // if collision has occured, gray out the screen before rendering the player
+        if (player.bugCollision === true){
+            ctx.drawImage(Resources.get('images/gray.png'), 0, 52);
+
+            // if player is at the top of the screen, render restart message
+            if (player.y ===0) {
+            ctx.font = "30px Arial";
+            ctx.fillText("Mary has ascended to the afterlife", 22, 455);
+            ctx.font = "20px Arial";
+            ctx.fillText("(Press <space> to bring her back to earth)", 50, 490);
+            ctx.font = "15px Arial";
+            ctx.fillText("Disclaimer: No bugs were harmed during the making of this game", 25, 530);
+            }
+        }
         player.render();
+
     }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
+
+     //place score and level on screen at the beginning of the game
+
     function reset() {
-        // noop
+        ctx.font = "30px Arial";
+        ctx.fillText("Score: ", 101, 35);
+        ctx.fillText("Level: ", 303, 35);
+        ctx.font = "20px Arial";
+        ctx.fillText("Use the arrow keys to help Mary safely reach the pool.", 10, 616);
+        ctx.fillText("Extra points for grabbing treasues as you go.", 30, 640);
+
+
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -171,7 +227,14 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/Mary.png',
+        'images/Mary-Angel.png',
+        'images/gem-blue.png',
+        'images/gem-green.png',
+        'images/gem-orange.png',
+        'images/Heart.png',
+        'images/Key.png',
+        'images/gray.png'
     ]);
     Resources.onReady(init);
 
@@ -180,4 +243,5 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+    global.canvas = canvas;
 })(this);

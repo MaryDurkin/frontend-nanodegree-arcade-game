@@ -1,6 +1,19 @@
-frontend-nanodegree-arcade-game
-===============================
+# Mary Walsh - P3 Frogger Game
 
-Students should use this [rubric](https://www.udacity.com/course/viewer/#!/c-nd001/l-2696458597/m-2687128535) for self-checking their submission.
+### To run the game go to:
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+### How to play
+
+The goal is to help Mary get from the grass to the nice blue swimming pool.
+Use the arrow keys to help her cross.
+Be careful she doen't touch any of
+those nasty poisonous bugs as she crosses.
+If that happens the game will end and a
+short ascension service will take place.
+If you collect any of the treasures that appear on the path
+that will increase your score.
+To restart the game after a collision with a bug, press <space>
+
+## Thank you!
+
+### Mary Walsh FEND - P3 Frogger
