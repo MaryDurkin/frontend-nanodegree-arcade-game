@@ -1,6 +1,6 @@
 # Mary Walsh - P3 Frogger Game
 
-### To run the game go to:
+### You can play the game [here](http://marydurkin.github.io/frontend-nanodegree-arcade-game/)
 
 ### How to play
 
